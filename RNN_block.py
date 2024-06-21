@@ -1,0 +1,26 @@
+class RNN_block:
+    def __init__(self, input_size, feature_size, output_size):
+        self.input_size = input_size
+        self.feature_size = feature_size
+        self.num_qubits = input_size
+    
+    def embedding(self, params):
+        n = (len(params) + 1) // 2
+        for i in range(n):
+            qml.Hadamard(i)
+            qml.RZ(2.0 * params[i], i)
+        
+        for i in range(n - 1):
+            qml.IsingZZ(2.0 * params[n + i] ,[i , i + 1])
+    
+    def ansatz(self, params, all_entangled = False):
+        # Length of Params : 3 * num_qubit
+        n = self.num_qubits
+        for i in range(n):
+            qml.RX(params[3 * i], i)
+            qml.RY(params[3 * i + 1], i)
+            qml.RZ(params[3 * i + 2], i)
+        for i in range(n - 1):
+            qml.CNOT([i, i + 1])
+        if all_entangled:
+            qml.CNOT([n - 1, 0])
