@@ -5,7 +5,7 @@ class RNN_block:
 
     
     def embedding(self, params):
-        n = (self.input_size + 1) // 2
+        n = self.input_size
         for i in range(n):
             qml.Hadamard(i)
             qml.RZ(2.0 * params[:,i], i)
