@@ -2,3 +2,4 @@ pennylane
 torch
 qiskit
 pykan
+scikit-learn
