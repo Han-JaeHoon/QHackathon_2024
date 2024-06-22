@@ -46,7 +46,7 @@ class data_seq():
         return train_loader, test_loader
 
 class train_seq():
-    def __init__(self,model,train_loader,test_loader):
+    def __init__(self, model, train_loader, test_loader):
         """data seq로 만든 데이터를 입력하면 훈련을 진행해줍니다.
 
         Args:
@@ -57,7 +57,8 @@ class train_seq():
         self.model= model
         self.train_data = train_loader
         self.test_data = test_loader
-    def train(self,epochs,optimizer,criterion,seq_first = False):
+    
+    def train(self, epochs, optimizer, criterion, seq_first = False):
         train_loss_list = []
         test_loss_list =[]
         for epoch in range(epochs):
@@ -69,7 +70,7 @@ class train_seq():
                     label = label.permute(0,1)
                 
                 optimizer.zero_grad()
-                pred = self.model(train)
+                pred = self.model(train) ## Forward 사용
                 pred_list.append(pred)
                 label_list.append(label)
                 loss = criterion(pred,label)
@@ -83,10 +84,11 @@ class train_seq():
             test_loss_list.append(loss_test.detach().item())
             print(f'epoch : {epoch+1} loss :{loss} loss_test = {loss_test}')
         return train_loss_list, test_loss_list
+
     def test(self,criterion,seq_first = False):
         pred_list = []
         label_list = []
-        for test,label in self.test_data:
+        for test, label in self.test_data:
             if seq_first:
                 test = test.permute(1,0,2)
                 label = label.permute(0,1)
