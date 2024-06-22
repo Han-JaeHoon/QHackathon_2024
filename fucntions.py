@@ -97,4 +97,4 @@ class train_seq():
         pred = torch.concat(pred_list)
         label = torch.concat(label_list)
         loss = criterion(pred,label)
-        return loss
+        return loss.detach()
