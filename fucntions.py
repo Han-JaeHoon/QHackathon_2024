@@ -58,6 +58,8 @@ class train_seq():
         self.train_data = train_loader
         self.test_data = test_loader
     def train(self,epochs,optimizer,criterion,seq_first = False):
+        loss_test_list = []
+        loss_train_list = []
         for epoch in range(epochs):
             pred_list = []
             label_list = []
@@ -77,7 +79,11 @@ class train_seq():
             label = torch.concat(label_list)
             loss = criterion(pred,label)
             loss_test = self.test(criterion,seq_first)
+            loss_train_list.append(loss)
+            loss_test_list.append(loss_test)
             print(f'epoch : {epoch+1} loss :{loss} loss_test = {loss_test}')
+        self.loss_list = loss_test_list
+        self.loss_train_list = loss_train_list
     def test(self,criterion,seq_first = False):
         pred_list = []
         label_list = []
